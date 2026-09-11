@@ -21,7 +21,7 @@ for pinned_package in wcash-wallet zcash_protocol zcash_primitives pczt; do
     exit 1
   fi
   if printf '%s\n' "$pinned_lines" | grep -Evq \
-    "^${pinned_package} v[^ ]+ \(https://github.com/w-cash/wolf.git\?rev=9fd24d2589c56efd1e5ecac90820bdf8997edce6#9fd24d25\)( \(\*\))?$"; then
+    "^${pinned_package} v[^ ]+ \(https://github.com/w-cash/wolf.git\?rev=ea1385c99308e3c00946a3f1cc064a3c3abbf5b0#ea1385c9\)( \(\*\))?$"; then
     echo "boundary check failed: $pinned_package also resolves outside the reviewed Wolf revision" >&2
     exit 1
   fi
