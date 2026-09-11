@@ -12,7 +12,7 @@ bip39 = { version = "2.2.2", features = ["zeroize"] }
 hex = "0.4.3"
 secrecy = "0.8.0"
 thiserror = "2.0.17"
-wcash-wallet = { git = "https://github.com/w-cash/wolf.git", rev = "9fd24d2589c56efd1e5ecac90820bdf8997edce6" }
+wcash-wallet = { git = "https://github.com/w-cash/wolf.git", rev = "ea1385c99308e3c00946a3f1cc064a3c3abbf5b0" }
 zeroize = "1.8.2"
 
 [dev-dependencies]
@@ -22,9 +22,9 @@ tokio = { version = "1.47.1", features = ["macros", "rt-multi-thread"] }
 # Cargo applies only the root package's patch table. Repeat Wolf's three
 # consensus patches here so this standalone bridge cannot resolve upstream
 # against unmodified Zcash transaction domains.
-zcash_primitives = { git = "https://github.com/w-cash/wolf.git", rev = "9fd24d2589c56efd1e5ecac90820bdf8997edce6" }
-zcash_protocol = { git = "https://github.com/w-cash/wolf.git", rev = "9fd24d2589c56efd1e5ecac90820bdf8997edce6" }
-pczt = { git = "https://github.com/w-cash/wolf.git", rev = "9fd24d2589c56efd1e5ecac90820bdf8997edce6" }
+zcash_primitives = { git = "https://github.com/w-cash/wolf.git", rev = "ea1385c99308e3c00946a3f1cc064a3c3abbf5b0" }
+zcash_protocol = { git = "https://github.com/w-cash/wolf.git", rev = "ea1385c99308e3c00946a3f1cc064a3c3abbf5b0" }
+pczt = { git = "https://github.com/w-cash/wolf.git", rev = "ea1385c99308e3c00946a3f1cc064a3c3abbf5b0" }
 
 [lints.rust]
 missing_docs = "deny"
