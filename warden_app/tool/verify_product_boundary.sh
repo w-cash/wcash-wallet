@@ -23,6 +23,38 @@ require_text pubspec.yaml 'flutter_secure_storage: 10.0.0'
 require_text pubspec.yaml 'path: 1.9.1'
 require_text pubspec.yaml 'path_provider: 2.1.5'
 require_text pubspec.yaml 'path: rust_builder'
+require_text pubspec.yaml 'path: vendor/flutter_secure_storage_linux'
+require_text pubspec.yaml 'path: vendor/flutter_secure_storage_windows'
+require_text vendor/flutter_secure_storage_linux/WARDEN_FORK.md \
+  'Wcash Warden Linux secure-storage fork'
+require_text vendor/flutter_secure_storage_windows/WARDEN_FORK.md \
+  'Wcash Warden Windows secure-storage fork'
+require_text vendor/flutter_secure_storage_linux/linux/include/Secret.hpp \
+  'std::unique_ptr<const std::string> label'
+require_text vendor/flutter_secure_storage_windows/lib/src/atomic_file_storage.dart \
+  'abstract interface class SecureStorageFileOperations'
+
+require_lock_path() {
+  local package="$1"
+  local expected_path="$2"
+  if ! awk -v package="$package" -v expected_path="$expected_path" '
+    $0 == "  " package ":" { in_package = 1; next }
+    in_package && /^  [a-zA-Z0-9_]+:/ { exit }
+    in_package && $1 == "path:" && $2 == "\"" expected_path "\"" { found_path = 1 }
+    in_package && $1 == "source:" && $2 == "path" { found_source = 1 }
+    END { exit !(found_path && found_source) }
+  ' "$app_dir/pubspec.lock"; then
+    echo "boundary check failed: $package is not locked to $expected_path" >&2
+    exit 1
+  fi
+}
+
+require_lock_path \
+  flutter_secure_storage_linux \
+  vendor/flutter_secure_storage_linux
+require_lock_path \
+  flutter_secure_storage_windows \
+  vendor/flutter_secure_storage_windows
 require_text rust_builder/pubspec.yaml 'name: rust_lib_wcash_warden'
 require_text rust/Cargo.toml 'name = "rust_lib_wcash_warden"'
 require_text rust/Cargo.toml 'flutter_rust_bridge = "=2.11.1"'
@@ -37,6 +69,12 @@ require_text macos/Runner/Configs/AppInfo.xcconfig \
   'PRODUCT_BUNDLE_IDENTIFIER = com.wcashwallet.warden.testnet'
 require_text linux/CMakeLists.txt 'set(BINARY_NAME "wcash-warden-testnet")'
 require_text windows/CMakeLists.txt 'set(BINARY_NAME "wcash-warden-testnet")'
+require_text linux/runner/my_application.cc 'G_APPLICATION_DEFAULT_FLAGS'
+require_text linux/runner/my_application.cc 'GLIB_CHECK_VERSION(2, 74, 0)'
+require_text linux/runner/my_application.cc 'flock(lock_fd, LOCK_EX | LOCK_NB)'
+require_text linux/runner/my_application.cc 'O_NOFOLLOW'
+require_text windows/runner/main.cpp 'class SingleInstanceLock'
+require_text windows/runner/main.cpp 'FILE_ATTRIBUTE_HIDDEN'
 require_text android/app/src/main/AndroidManifest.xml \
   '<uses-permission android:name="android.permission.INTERNET" />'
 require_text android/app/src/main/AndroidManifest.xml \
@@ -78,6 +116,17 @@ if grep -Fq 'signingConfigs.getByName("debug")' \
   echo 'boundary check failed: Android release is wired to the debug key' >&2
   exit 1
 fi
+if grep -Fq 'G_APPLICATION_NON_UNIQUE' \
+  "$app_dir/linux/runner/my_application.cc"; then
+  echo 'boundary check failed: Linux Warden permits concurrent app processes' >&2
+  exit 1
+fi
+require_text \
+  vendor/flutter_secure_storage_linux/linux/include/Secret.hpp \
+  'SecretStorageCorruptionError'
+require_text \
+  vendor/flutter_secure_storage_linux/linux/include/Secret.hpp \
+  'parseStoredSecret'
 
 # Keep the application package deliberately small and stop inherited root-app
 # dependencies from entering through a later pubspec edit.

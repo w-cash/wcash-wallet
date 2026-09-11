@@ -32,8 +32,16 @@ Future persistent state is reserved under:
 Apple stores the mnemonic in a non-synchronizable, this-device-only keychain
 item available only while unlocked. Android backup and device transfer are
 disabled and explicitly exclude both the secure preferences and wallet DB
-namespace. Linux uses the plugin's libsecret backend, and Windows uses its
-DPAPI-backed default with the Wcash Testnet key namespace.
+namespace. Linux uses libsecret through a vendored plugin fork that keeps the
+native schema name in stable owned storage. Windows uses a vendored DPAPI
+plugin fork with serialized, same-directory atomic replacement, a validated
+recovery copy, and non-destructive corrupt-read handling. Both forks retain
+their upstream licenses and include focused regression tests under `vendor/`.
+Linux and Windows also enforce one Warden process per local user profile so
+whole-store updates cannot race across desktop launches. Linux combines the
+desktop session identity with a user-data advisory lock; Windows holds an
+exclusive file handle in local application data. The operating system releases
+both locks if the process exits or crashes.
 
 ## Development
 
