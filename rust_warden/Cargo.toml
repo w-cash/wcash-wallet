@@ -1,0 +1,31 @@
+[package]
+name = "rust_warden"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.88"
+publish = false
+description = "Minimal Wcash Warden Testnet bridge core"
+license = "Apache-2.0"
+
+[dependencies]
+bip39 = { version = "2.2.2", features = ["zeroize"] }
+hex = "0.4.3"
+secrecy = "0.8.0"
+thiserror = "2.0.17"
+wcash-wallet = { git = "https://github.com/w-cash/wolf.git", rev = "9fd24d2589c56efd1e5ecac90820bdf8997edce6" }
+zeroize = "1.8.2"
+
+[dev-dependencies]
+tokio = { version = "1.47.1", features = ["macros", "rt-multi-thread"] }
+
+[patch.crates-io]
+# Cargo applies only the root package's patch table. Repeat Wolf's three
+# consensus patches here so this standalone bridge cannot resolve upstream
+# against unmodified Zcash transaction domains.
+zcash_primitives = { git = "https://github.com/w-cash/wolf.git", rev = "9fd24d2589c56efd1e5ecac90820bdf8997edce6" }
+zcash_protocol = { git = "https://github.com/w-cash/wolf.git", rev = "9fd24d2589c56efd1e5ecac90820bdf8997edce6" }
+pczt = { git = "https://github.com/w-cash/wolf.git", rev = "9fd24d2589c56efd1e5ecac90820bdf8997edce6" }
+
+[lints.rust]
+missing_docs = "deny"
+unsafe_code = "forbid"
