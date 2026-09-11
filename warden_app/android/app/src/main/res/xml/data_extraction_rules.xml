@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude
+            domain="sharedpref"
+            path="com.wcashwallet.warden.testnet.secure-store.xml" />
+        <exclude
+            domain="file"
+            path="wcashtestnet-v5/" />
+        <exclude
+            domain="database"
+            path="wcash-warden-wcashtestnet-v5.sqlite3" />
+    </cloud-backup>
+    <device-transfer>
+        <exclude
+            domain="sharedpref"
+            path="com.wcashwallet.warden.testnet.secure-store.xml" />
+        <exclude
+            domain="file"
+            path="wcashtestnet-v5/" />
+        <exclude
+            domain="database"
+            path="wcash-warden-wcashtestnet-v5.sqlite3" />
+    </device-transfer>
+</data-extraction-rules>

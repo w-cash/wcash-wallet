@@ -1,0 +1,26 @@
+[package]
+name = "rust_lib_wcash_warden"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.88"
+publish = false
+description = "Flutter bridge for the isolated Wcash Warden Testnet app"
+license = "Apache-2.0"
+
+[lib]
+crate-type = ["cdylib", "staticlib"]
+
+[dependencies]
+flutter_rust_bridge = "=2.11.1"
+rust_warden = { path = "../../rust_warden" }
+
+# A dependency's patch table is not inherited by Cargo. Keep the bridge on the
+# exact reviewed Wolf revision selected by rust_warden.
+[patch.crates-io]
+zcash_primitives = { git = "https://github.com/w-cash/wolf.git", rev = "ea1385c99308e3c00946a3f1cc064a3c3abbf5b0" }
+zcash_protocol = { git = "https://github.com/w-cash/wolf.git", rev = "ea1385c99308e3c00946a3f1cc064a3c3abbf5b0" }
+pczt = { git = "https://github.com/w-cash/wolf.git", rev = "ea1385c99308e3c00946a3f1cc064a3c3abbf5b0" }
+
+[lints.rust]
+missing_docs = "deny"
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }

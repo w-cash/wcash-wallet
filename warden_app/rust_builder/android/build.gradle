@@ -1,0 +1,43 @@
+group = "com.wcashwallet.warden.rust_lib_wcash_warden"
+version = "1.0"
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.11.1")
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+apply plugin: "com.android.library"
+
+android {
+    namespace = "com.wcashwallet.warden.rust_lib_wcash_warden"
+    compileSdk = 36
+    ndkVersion = android.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    defaultConfig {
+        minSdk = 24
+    }
+}
+
+apply from: "../cargokit/gradle/plugin.gradle"
+cargokit {
+    manifestDir = "../../rust"
+    libname = "rust_lib_wcash_warden"
+}

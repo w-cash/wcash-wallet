@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Defense in depth: android:allowBackup is also false. -->
+    <exclude
+        domain="sharedpref"
+        path="com.wcashwallet.warden.testnet.secure-store.xml" />
+    <exclude
+        domain="file"
+        path="wcashtestnet-v5/" />
+    <exclude
+        domain="database"
+        path="wcash-warden-wcashtestnet-v5.sqlite3" />
+</full-backup-content>
